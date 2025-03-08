@@ -1,0 +1,428 @@
+/* Global Styles */
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #4e3b31, #3a2e26);
+    font-family: 'Arial', sans-serif;
+    color: #f9f4e8;
+    overflow: hidden;
+  }
+  
+  /* Header Section */
+  header {
+    width: 100%;
+    text-align: center;
+    background-color: rgba(50, 37, 31, 0.95);
+    padding: 10px 0;
+    font-size: 16px;
+    color: #f9f4e8;
+  }
+  
+  .verse-container {
+    font-size: 18px;
+    color: #f9f4e8;
+    height: 30px;
+    animation: fadeInOut 8s infinite;
+  }
+  
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+  
+ /* Main Section */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align everything to the left */
+    justify-content: center;
+    height: 80vh;
+    padding-left: 20px; /* Adjust padding for spacing from the edge */
+  }/* Global Styles */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom right, #4e3b31, #3a2e26, #6b4e3d);
+  background-size: 300% 300%; /* For animated gradient */
+  animation: backgroundShift 20s infinite; /* Slow gradient animation */
+  font-family: 'Arial', sans-serif;
+  color: #f9f4e8;
+  overflow: hidden;
+}
+
+/* Background Animation */
+@keyframes backgroundShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Main Section */
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns content to the left */
+  justify-content: center;
+  height: 80vh;
+  padding-left: 20px; /* Adds spacing from the edge */
+}
+
+.title {
+  font-size: 48px;
+  margin-bottom: 20px;
+  color: #e6c68d;
+  animation: slideInLeft 2s ease; /* Slide-in animation */
+  position: relative;
+}
+
+.title-bar {
+  width: 400px; /* Longer title bar */
+  height: 5px;
+  background: linear-gradient(to right, #e6c68d, #fff4cc);
+  box-shadow: 0 0 8px #e6c68d;
+  margin-top: 5px;
+  border-radius: 2px;
+  transition: all 0.3s ease; /* Smooth hover effects */
+}
+
+.title-bar:hover {
+  box-shadow: 0 0 15px #fff4cc;
+}
+
+/* Buttons */
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.menu-btn {
+  width: 220px;
+  padding: 15px;
+  border: none;
+  background: linear-gradient(to right, #6b4e3d, #7a523d);
+  color: #f9f4e8;
+  font-size: 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  overflow: hidden; /* To clip the ripple effect */
+}
+
+.menu-btn:hover {
+  background: linear-gradient(to right, #e6c68d, #f9dbb5);
+  color: #3a2e26;
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.menu-btn:active::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+  to {
+    width: 200%;
+    height: 200%;
+    opacity: 0;
+  }
+}
+
+/* Books Menu */
+.books-menu {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 550px;
+  background: #5e4436;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -60%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.books-menu h2 {
+  margin-bottom: 20px;
+  color: #f9f4e8;
+}
+
+.books-menu .title-bar {
+  margin: 0 auto;
+  width: 150px;
+  height: 5px;
+  background: linear-gradient(to right, #e6c68d, #fff4cc);
+  box-shadow: 0 0 8px #e6c68d;
+  margin-top: 5px;
+  border-radius: 2px;
+}
+
+.books-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.books-list li {
+  margin: 10px 0;
+  padding: 10px;
+  background: #6b4e3d;
+  color: #f9f4e8;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.books-list li:hover {
+  background: #e6c68d;
+  color: #3a2e26;
+}
+
+.close-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: linear-gradient(to right, #6b4e3d, #7a523d);
+  color: #f9f4e8;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.close-btn:hover {
+  background: linear-gradient(to right, #e6c68d, #f9dbb5);
+  color: #3a2e26;
+  transform: scale(1.1);
+}
+
+/* Animations */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+  
+  .title {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #e6c68d;
+    animation: fadeIn 2s ease;
+  }
+  
+  .title-bar {
+    width: 400px; /* Doubled the width as requested earlier */
+    height: 5px;
+    background: linear-gradient(to right, #e6c68d, #fff4cc);
+    box-shadow: 0 0 8px #e6c68d;
+    margin-top: 5px;
+    border-radius: 2px;
+  }
+  
+  .menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .menu-btn {
+    width: 220px;
+    padding: 15px;
+    border: none;
+    background: linear-gradient(to right, #6b4e3d, #7a523d);
+    color: #f9f4e8;
+    font-size: 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .menu-btn:hover {
+    background: linear-gradient(to right, #e6c68d, #f9dbb5);
+    color: #3a2e26;
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Books Menu */
+  .books-menu {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 550px;
+    background: #5e4436;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -60%);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .books-menu h2 {
+    margin-bottom: 20px;
+    color: #f9f4e8;
+  }
+  
+  .books-menu .title-bar {
+    margin: 0 auto;
+    width: 150px;
+    height: 5px;
+    background: linear-gradient(to right, #e6c68d, #fff4cc);
+    box-shadow: 0 0 8px #e6c68d;
+    margin-top: 5px;
+    border-radius: 2px;
+  }
+  
+  .books-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .books-list li {
+    margin: 10px 0;
+    padding: 10px;
+    background: #6b4e3d;
+    color: #f9f4e8;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .books-list li:hover {
+    background: #e6c68d;
+    color: #3a2e26;
+  }
+  
+  .close-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: linear-gradient(to right, #6b4e3d, #7a523d);
+    color: #f9f4e8;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+  }
+  
+  .close-btn:hover {
+    background: linear-gradient(to right, #e6c68d, #f9dbb5);
+    color: #3a2e26;
+    transform: scale(1.1);
+  }
+  
+  /* Footer Section */
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background: #3a2e26;
+    color: #e6c68d;
+    font-size: 14px;
+  }
+  
+  .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .footer-links {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .footer-links a {
+    text-decoration: none;
+    color: #e6c68d;
+    font-size: 14px;
+    transition: color 0.3s;
+  }
+  
+  .footer-links a:hover {
+    color: #fff4cc;
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translate(-50%, -60%);
+      opacity: 0;
+    }
+    to {
+      transform: translate(-50%, -50%);
+      opacity: 1;
+    }
+  }
+
+/* Calendar Section */
+.calendar-container {
+    position: fixed;
+    bottom: 10px; /* Positioned at the bottom */
+    left: 10px;
+    width: 350px; /* Keeps the rectangular shape */
+    height: auto;
+    background: #3a2e26;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    color: #f9f4e8;
+    text-align: center;
+    z-index: 100; /* Ensures the calendar is above the footer */
+  }
+  
+  .calendar-title {
+    font-size: 18px;
+    color: #e6c68d;
+    margin-bottom: 10px;
+  }
+  
+  iframe {
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+    height: 250px; /* Maintains the rectangular height */
+  }

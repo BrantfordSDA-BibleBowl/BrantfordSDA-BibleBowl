@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bible Bowl Main Menu</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Age Groups and Books Menu Styling */
+    .menu-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      position: fixed;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .age-groups-menu, .books-menu {
+      width: 400px;
+      height: 450px;
+      background: #5e4436;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-20px) scale(0.8);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      position: relative;
+    }
+
+    .age-groups-menu.show, .books-menu.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    .books-menu {
+      margin-left: -200px;
+      overflow-y: auto;
+      max-height: 450px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .close-btn:hover {
+      transform: scale(1.2);
+    }
+
+    .title-bar {
+      width: 50%;
+      height: 5px;
+      background: linear-gradient(to right, #e6c68d, #fff4cc);
+      box-shadow: 0 0 8px #e6c68d;
+      margin: 10px auto;
+      border-radius: 2px;
+    }
+
+    .menu-list {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0;
+      max-height: 360px;
+      overflow-y: auto;
+    }
+
+    .menu-item {
+      margin: 10px 0;
+      padding: 15px;
+      background: #6b4e3d;
+      color: #f9f4e8;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .menu-item:hover {
+      background: #e6c68d;
+      color: #3a2e26;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="verse-container" id="verse-container"></div>
+  </header>
+
+  <div class="main-container">
+    <h1 class="title">Bible Bowl<div class="title-bar"></div></h1>
+    <div class="menu-buttons">
+      <button class="menu-btn" id="age-groups-btn">Age Groups</button>
+      <button class="menu-btn">Settings</button>
+      <button class="menu-btn">Study Plan</button>
+    </div>
+  </div>
+
+  <div class="menu-container" id="menu-container">
+    <div class="age-groups-menu" id="age-groups-menu">
+      <button class="close-btn" id="close-age-groups">×</button>
+      <h2>Select an Age Group<div class="title-bar"></div></h2>
+      <ul class="menu-list" id="age-groups-list">
+        <li class="menu-item" data-group="pre_junior">Pre-Junior (Ages 6-9)</li>
+        <li class="menu-item" data-group="junior_youth">Junior Youth (Ages 10-15)</li>
+        <li class="menu-item" data-group="senior_youth">Senior Youth (Ages 16-22)</li>
+        <li class="menu-item" data-group="young_adult">Young Adult (Ages 23-35)</li>
+        <li class="menu-item" data-group="adult">Adult (Ages 36+)</li>
+      </ul>
+    </div>
+
+    <div class="books-menu" id="books-menu">
+      <button class="close-btn" id="close-books">×</button>
+      <h2>Select a Book<div class="title-bar"></div></h2>
+      <ul class="menu-list" id="books-list"></ul>
+    </div>
+  </div>
+
+  <div class="calendar-container">
+    <h3 class="calendar-title">Brantford Schedule</h3>
+    <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_id&ctz=America%2FToronto" 
+      style="border:0" width="100%" height="250" frameborder="0" scrolling="no">
+    </iframe>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <p>© 2025 Bible Bowl | Designed with love and faith</p>
+      <div class="footer-links">
+        <a href="#">Contact</a>
+        <a href="#">Source Code</a>
+        <a href="#">Credits</a>
+        <a href="#">Info</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const ageGroups = {
+      pre_junior: ["Exodus", "John"],
+      junior_youth: ["Exodus", "John", "Romans", "Esther"],
+      senior_youth: ["Exodus", "John", "Romans", "Esther", "Jonah"],
+      young_adult: ["Exodus", "John", "Romans", "Esther", "Jonah", "1 Timothy", "2 Timothy"],
+      adult: ["Exodus", "John", "Romans", "Esther", "Jonah", "1 Timothy", "2 Timothy", "Colossians"]
+    };
+
+    const ageGroupsMenu = document.getElementById("age-groups-menu");
+    const booksMenu = document.getElementById("books-menu");
+    const booksList = document.getElementById("books-list");
+    const ageGroupsBtn = document.getElementById("age-groups-btn");
+    const closeAgeGroupsBtn = document.getElementById("close-age-groups");
+    const closeBooksBtn = document.getElementById("close-books");
+    const ageGroupItems = document.querySelectorAll(".menu-item");
+
+    ageGroupsBtn.addEventListener("click", () => {
+      ageGroupsMenu.classList.add("show");
+    });
+
+    closeAgeGroupsBtn.addEventListener("click", () => {
+      ageGroupsMenu.classList.remove("show");
+      booksMenu.classList.remove("show");
+    });
+
+    closeBooksBtn.addEventListener("click", () => {
+      booksMenu.classList.remove("show");
+    });
+
+    ageGroupItems.forEach(item => {
+      item.addEventListener("click", () => {
+        booksList.innerHTML = "";
+        const selectedGroup = item.dataset.group;
+        ageGroups[selectedGroup].forEach(book => {
+          const bookItem = document.createElement("li");
+          bookItem.textContent = book;
+          bookItem.className = "menu-item";
+          bookItem.addEventListener("click", () => {
+            window.location.href = `books/${book}/${book}.html`;
+          });
+          booksList.appendChild(bookItem);
+        });
+        booksMenu.classList.add("show");
+      });
+    });
+  </script>
+</body>
+</html>

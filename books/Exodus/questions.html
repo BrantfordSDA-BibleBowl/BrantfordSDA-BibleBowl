@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questions - Exodus</title>
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      background: #3a2e26;
+      font-family: 'Arial', sans-serif;
+      color: #f9f4e8;
+      overflow: hidden; /* Prevent scrolling caused by animations */
+    }
+
+    header {
+      text-align: center;
+      padding: 20px 0;
+      background: #3a2e26;
+      color: #e6c68d;
+      font-size: 24px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    main {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin: 20px auto;
+      max-width: 1200px;
+      position: relative;
+      height: 80vh;
+    }
+
+    /* Chapter List Styles */
+    .chapter-list {
+      width: 30%;
+      max-width: 300px;
+      background: #5e4436;
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .chapter-list.dimmed {
+      transform: translateX(-20%); /* Slightly slides to the left */
+      opacity: 0.5; /* Makes the list dimmed but still visible */
+    }
+
+    .chapter-header {
+      padding: 15px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 18px;
+      background: #6b4e3d;
+      color: #f9f4e8;
+      border-radius: 10px;
+      transition: background 0.3s, color 0.3s, transform 0.3s;
+    }
+
+    .chapter-header:hover {
+      background: #e6c68d;
+      color: #3a2e26;
+      transform: scale(1.05);
+    }
+
+    /* Questions Menu Styles */
+    .questions-menu {
+      flex: 1;
+      margin-left: 20px;
+      padding: 15px;
+      border-radius: 15px;
+      background: #5e4436;
+      opacity: 0;
+      transform: translateX(110%);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+
+    .questions-menu.active {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    h2 {
+      color: #e6c68d;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .question {
+      margin-bottom: 15px;
+      padding: 15px;
+      background: #5e4436;
+      border-radius: 10px;
+      color: #f9f4e8;
+      transition: background 0.3s;
+    }
+
+    .question:hover {
+      background: #7a523d;
+    }
+
+    .answer {
+      margin-top: 10px;
+      padding: 10px;
+      background: #4e3b31;
+      border-radius: 8px;
+      color: #e6c68d;
+      font-size: 16px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .nav-btn {
+      padding: 10px 20px;
+      border: none;
+      background: linear-gradient(to right, #6b4e3d, #7a523d);
+      color: #f9f4e8;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .nav-btn:hover {
+      background: linear-gradient(to right, #e6c68d, #f9dbb5);
+      color: #3a2e26;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <header>Questions - Exodus</header>
+  <main>
+    <!-- Chapter List -->
+    <div class="chapter-list" id="chapterList">
+      <div class="chapter-header" onclick="openChapter('Chapter 1')">Chapter 1</div>
+      <div class="chapter-header" onclick="openChapter('Chapter 2')">Chapter 2</div>
+      <!-- Add more chapters as needed -->
+      <div class="nav-buttons">
+        <button class="nav-btn" onclick="goToExodus()">Back to Exodus Menu</button>
+      </div>
+    </div>
+
+    <!-- Questions Menu -->
+    <div class="questions-menu" id="questionsMenu">
+      <h2 id="chapterTitle">Chapter Title</h2>
+      <div id="questionsContainer">
+        <!-- Questions will be dynamically populated here -->
+      </div>
+      <div class="nav-buttons">
+        <button class="nav-btn" onclick="goBack()">Back to Chapters</button>
+      </div>
+    </div>
+  </main>
+  <script>
+    const questions = {
+      "Chapter 1": [
+        { question: "What event caused the Israelites to become slaves in Egypt?", answer: "A new Pharaoh came to power who did not know Joseph." },
+        { question: "How did Pharaoh try to reduce the number of Israelites?", answer: "He ordered the killing of all male Hebrew babies." }
+      ],
+      "Chapter 2": [
+        { question: "Who found Moses in the Nile River?", answer: "Pharaoh's daughter." },
+        { question: "Why did Moses flee Egypt?", answer: "He killed an Egyptian who was beating a Hebrew slave." }
+      ]
+    };
+
+    const chapterList = document.getElementById("chapterList");
+    const questionsMenu = document.getElementById("questionsMenu");
+    const questionsContainer = document.getElementById("questionsContainer");
+    const chapterTitle = document.getElementById("chapterTitle");
+
+    function openChapter(chapter) {
+      // Populate questions
+      chapterTitle.textContent = chapter;
+      questionsContainer.innerHTML = questions[chapter]
+        .map(
+          q => `
+          <div class="question">
+            ${q.question}
+            <div class="answer">${q.answer}</div>
+          </div>
+        `
+        )
+        .join("");
+
+      // Show questions menu and dim chapter list
+      chapterList.classList.add("dimmed");
+      questionsMenu.classList.add("active");
+    }
+
+    function goBack() {
+      // Show chapter list and hide questions menu
+      chapterList.classList.remove("dimmed");
+      questionsMenu.classList.remove("active");
+    }
+
+    function goToExodus() {
+      // Navigate back to the main Exodus menu
+      window.location.href = "exodus.html";
+    }
+  </script>
+</body>
+</html>

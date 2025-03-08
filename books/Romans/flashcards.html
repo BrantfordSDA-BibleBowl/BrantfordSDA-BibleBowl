@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flashcards - Romans</title>
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      padding: 0;
+      background: #3a2e26;
+      font-family: 'Arial', sans-serif;
+      color: #f9f4e8;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px 0;
+      background: #3a2e26;
+      color: #e6c68d;
+      font-size: 24px;
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+    }
+
+    main {
+      display: flex;
+      width: 100%;
+      padding-top: 70px;
+    }
+
+    /* Chapter List Styles */
+    .chapter-list {
+      width: 30%;
+      max-width: 300px;
+      background: #5e4436;
+      border-radius: 15px;
+      padding: 15px;
+      height: calc(100vh - 70px);
+      overflow-y: auto;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chapter-header {
+      padding: 15px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      text-align: center;
+      font-size: 18px;
+      background: #6b4e3d;
+      color: #f9f4e8;
+      border-radius: 10px;
+      transition: background 0.3s, color 0.3s, transform 0.3s;
+    }
+
+    .chapter-header:hover {
+      background: #e6c68d;
+      color: #3a2e26;
+      transform: scale(1.05);
+    }
+
+    .back-btn {
+      margin-top: auto;
+      padding: 15px;
+      text-align: center;
+      background: linear-gradient(to right, #6b4e3d, #7a523d);
+      color: #f9f4e8;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .back-btn:hover {
+      background: linear-gradient(to right, #e6c68d, #f9dbb5);
+      color: #3a2e26;
+      transform: scale(1.1);
+    }
+
+    /* Flashcard Container */
+    .flashcard-container {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Flashcard Style */
+    .flashcard {
+      width: 80%;
+      max-width: 600px;
+      height: 200px;
+      background: #5e4436;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.5s, background 0.5s, left 0.5s ease-in-out, opacity 0.5s;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      position: absolute;
+      opacity: 0;
+      left: 100%;
+    }
+
+    .flashcard.active {
+      opacity: 1;
+      left: 0;
+    }
+
+    .flashcard .inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      backface-visibility: hidden;
+      transition: transform 0.5s;
+    }
+
+    .flashcard .answer {
+      transform: rotateY(180deg);
+      display: none;
+      font-size: 18px;
+      font-weight: normal;
+    }
+
+    .flashcard.flipped .question {
+      display: none;
+    }
+
+    .flashcard.flipped .answer {
+      display: flex;
+    }
+
+    .flashcard.flipped {
+      transform: rotateY(180deg);
+      background: #4e3b31;
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .nav-btn {
+      padding: 10px 20px;
+      border: none;
+      background: linear-gradient(to right, #6b4e3d, #7a523d);
+      color: #f9f4e8;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .nav-btn:hover {
+      background: linear-gradient(to right, #e6c68d, #f9dbb5);
+      color: #3a2e26;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <header>Flashcards - Romans</header>
+
+  <main>
+    <div class="chapter-list" id="chapterList">
+      <div class="chapter-header" onclick="loadChapter('Romans 3')">Romans 3</div>
+      <div class="chapter-header" onclick="loadChapter('Romans 4')">Romans 4</div>
+      <div class="chapter-header" onclick="loadChapter('Romans 5')">Romans 5</div>
+      <div class="chapter-header" onclick="loadChapter('Romans 6')">Romans 6</div>
+      <div class="chapter-header" onclick="loadChapter('Romans 7')">Romans 7</div>
+      <div class="back-btn" onclick="goToMenu()">Back to Romans Menu</div>
+    </div>
+
+    <div class="flashcard-container" id="flashcardContainer">
+      <h2 id="chapterTitle">Chapter Title</h2>
+      <div class="flashcard" onclick="flipCard(this)">
+        <div class="inner question">Click to Reveal Answer</div>
+        <div class="inner answer"></div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn" onclick="previousCard()">Previous</button>
+        <button class="nav-btn" onclick="nextCard()">Next</button>
+        <button class="nav-btn" onclick="shuffleCards()">Shuffle</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const flashcardsData = {
+      "Romans 3": [
+        { question: "What advantage hath the Jew?", answer: "Much every way: chiefly, because unto them were committed the oracles of God (Romans 3:1-2, KJV)." }
+      ],
+      "Romans 4": [{ question: "How was Abraham justified before God?", answer: "By faith (Romans 4:3, KJV)." }]
+    };
+
+    let currentIndex = 0;
+    let currentChapter = "";
+
+    function loadChapter(chapter) {
+      currentChapter = chapter;
+      document.getElementById("chapterTitle").textContent = chapter;
+      document.getElementById("chapterList").style.display = "none";
+      document.getElementById("flashcardContainer").style.display = "flex";
+      currentIndex = 0;
+      updateCard();
+    }
+
+    function flipCard(card) { card.classList.toggle("flipped"); }
+    function nextCard() { currentIndex = (currentIndex + 1) % flashcardsData[currentChapter].length; updateCard(); }
+    function previousCard() { currentIndex = (currentIndex - 1 + flashcardsData[currentChapter].length) % flashcardsData[currentChapter].length; updateCard(); }
+    function goToMenu() { window.location.href = "Romans.html"; }
+  </script>
+</body>
+</html>
