@@ -6,7 +6,7 @@
   <title>Bible Bowl Main Menu</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Age Groups and Books Menu Styling */
+    /* Styling for Menus */
     .menu-container {
       display: flex;
       justify-content: center;
@@ -14,11 +14,10 @@
       gap: 20px;
       position: fixed;
       top: 45%;
-      left: 50%;
+      left: calc(50% + 10px); /* Moves the menu 10 pixels to the right */
       transform: translate(-50%, -50%);
     }
-
-    .age-groups-menu, .books-menu {
+    .menu-box {
       width: 400px;
       height: 450px;
       background: #5e4436;
@@ -31,18 +30,36 @@
       transform: translateY(-20px) scale(0.8);
       transition: opacity 0.4s ease, transform 0.4s ease;
       position: relative;
+      overflow-y: auto;
     }
-
-    .age-groups-menu.show, .books-menu.show {
+    .menu-box.show {
       opacity: 1;
       pointer-events: auto;
       transform: translateY(0) scale(1);
     }
 
-    .books-menu {
-      margin-left: -200px;
-      overflow-y: auto;
-      max-height: 450px;
+    /* ✅ Remove Dots (Bullets) from Lists */
+    .menu-list {
+      list-style: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .menu-item {
+      display: block;
+      margin: 10px 0;
+      padding: 15px;
+      background: #6b4e3d;
+      color: #f9f4e8;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      text-decoration: none;
+    }
+    .menu-item:hover {
+      background: #e6c68d;
+      color: #3a2e26;
+      transform: scale(1.05);
     }
 
     .close-btn {
@@ -56,46 +73,13 @@
       cursor: pointer;
       transition: transform 0.3s ease;
     }
-
     .close-btn:hover {
       transform: scale(1.2);
-    }
-
-    .title-bar {
-      width: 50%;
-      height: 5px;
-      background: linear-gradient(to right, #e6c68d, #fff4cc);
-      box-shadow: 0 0 8px #e6c68d;
-      margin: 10px auto;
-      border-radius: 2px;
-    }
-
-    .menu-list {
-      list-style: none;
-      padding: 0;
-      margin: 10px 0;
-      max-height: 360px;
-      overflow-y: auto;
-    }
-
-    .menu-item {
-      margin: 10px 0;
-      padding: 15px;
-      background: #6b4e3d;
-      color: #f9f4e8;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
-    }
-
-    .menu-item:hover {
-      background: #e6c68d;
-      color: #3a2e26;
-      transform: scale(1.05);
     }
   </style>
 </head>
 <body>
+
   <header>
     <div class="verse-container" id="verse-container"></div>
   </header>
@@ -109,26 +93,23 @@
     </div>
   </div>
 
-  <div class="menu-container" id="menu-container">
-    <div class="age-groups-menu" id="age-groups-menu">
+  <!-- Age Groups Menu -->
+  <div class="menu-container">
+    <div class="menu-box" id="age-groups-menu">
       <button class="close-btn" id="close-age-groups">×</button>
       <h2>Select an Age Group<div class="title-bar"></div></h2>
-      <ul class="menu-list" id="age-groups-list">
-        <li class="menu-item" data-group="pre_junior">Pre-Junior (Ages 6-9)</li>
-        <li class="menu-item" data-group="junior_youth">Junior Youth (Ages 10-15)</li>
-        <li class="menu-item" data-group="senior_youth">Senior Youth (Ages 16-22)</li>
-        <li class="menu-item" data-group="young_adult">Young Adult (Ages 23-35)</li>
-        <li class="menu-item" data-group="adult">Adult (Ages 36+)</li>
-      </ul>
+      <ul class="menu-list" id="age-groups-list"></ul>
     </div>
 
-    <div class="books-menu" id="books-menu">
+    <!-- Books Menu -->
+    <div class="menu-box" id="books-menu">
       <button class="close-btn" id="close-books">×</button>
       <h2>Select a Book<div class="title-bar"></div></h2>
       <ul class="menu-list" id="books-list"></ul>
     </div>
   </div>
 
+  <!-- Calendar Section -->
   <div class="calendar-container">
     <h3 class="calendar-title">Brantford Schedule</h3>
     <iframe src="https://calendar.google.com/calendar/embed?src=your_calendar_id&ctz=America%2FToronto" 
@@ -149,51 +130,56 @@
   </footer>
 
   <script>
+    // 🎯 Step 1: Define Age Groups & Books
     const ageGroups = {
-      pre_junior: ["Exodus", "John"],
-      junior_youth: ["Exodus", "John", "Romans", "Esther"],
-      senior_youth: ["Exodus", "John", "Romans", "Esther", "Jonah"],
-      young_adult: ["Exodus", "John", "Romans", "Esther", "Jonah", "1 Timothy", "2 Timothy"],
-      adult: ["Exodus", "John", "Romans", "Esther", "Jonah", "1 Timothy", "2 Timothy", "Colossians"]
+      "Pre-Junior (Ages 6-9)": ["Exodus", "John"],
+      "Junior Youth (Ages 10-15)": ["Exodus", "John", "Romans", "Esther"],
+      "Senior Youth (Ages 16-22)": ["Exodus", "John", "Romans", "Esther", "Jonah"],
+      "Young Adult (Ages 23-35)": ["Exodus", "John", "Romans", "Esther", "Jonah", "1 Timothy", "2 Timothy"],
+      "Adult (Ages 36+)": ["Exodus", "John", "Romans", "Esther", "Jonah", "1 Timothy", "2 Timothy", "Colossians"]
     };
 
+    // 🎯 Step 2: DOM Elements
     const ageGroupsMenu = document.getElementById("age-groups-menu");
     const booksMenu = document.getElementById("books-menu");
+    const ageGroupsList = document.getElementById("age-groups-list");
     const booksList = document.getElementById("books-list");
     const ageGroupsBtn = document.getElementById("age-groups-btn");
     const closeAgeGroupsBtn = document.getElementById("close-age-groups");
     const closeBooksBtn = document.getElementById("close-books");
-    const ageGroupItems = document.querySelectorAll(".menu-item");
 
+    // 🎯 Step 3: Open Age Groups Menu
     ageGroupsBtn.addEventListener("click", () => {
+      ageGroupsList.innerHTML = "";
+      Object.keys(ageGroups).forEach(group => {
+        const item = document.createElement("li");
+        item.textContent = group;
+        item.className = "menu-item";
+        item.addEventListener("click", () => showBooks(group));
+        ageGroupsList.appendChild(item);
+      });
       ageGroupsMenu.classList.add("show");
     });
 
-    closeAgeGroupsBtn.addEventListener("click", () => {
-      ageGroupsMenu.classList.remove("show");
-      booksMenu.classList.remove("show");
-    });
-
-    closeBooksBtn.addEventListener("click", () => {
-      booksMenu.classList.remove("show");
-    });
-
-    ageGroupItems.forEach(item => {
-      item.addEventListener("click", () => {
-        booksList.innerHTML = "";
-        const selectedGroup = item.dataset.group;
-        ageGroups[selectedGroup].forEach(book => {
-          const bookItem = document.createElement("li");
-          bookItem.textContent = book;
-          bookItem.className = "menu-item";
-          bookItem.addEventListener("click", () => {
-            window.location.href = `books/${book}/${book}.html`;
-          });
-          booksList.appendChild(bookItem);
+    // 🎯 Step 4: Show Books for Selected Age Group
+    function showBooks(group) {
+      booksList.innerHTML = "";
+      ageGroups[group].forEach(book => {
+        const bookItem = document.createElement("li");
+        bookItem.textContent = book;
+        bookItem.className = "menu-item";
+        bookItem.addEventListener("click", () => {
+          window.location.href = `books/${book}/questions.html`; // Redirect to the book's questions.html
         });
-        booksMenu.classList.add("show");
+        booksList.appendChild(bookItem);
       });
-    });
+      booksMenu.classList.add("show");
+    }
+
+    // 🎯 Step 5: Close Buttons
+    closeAgeGroupsBtn.addEventListener("click", () => ageGroupsMenu.classList.remove("show"));
+    closeBooksBtn.addEventListener("click", () => booksMenu.classList.remove("show"));
   </script>
+
 </body>
 </html>
